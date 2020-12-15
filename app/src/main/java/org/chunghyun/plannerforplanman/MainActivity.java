@@ -13,9 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
     private Fragment_Home frag_home;
     private Fragment_addPlanPage frag_plan;
     private Fragment_calendar frag_calendar;
@@ -25,51 +22,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //하단 네비게이션 바 설정
-        bottomNavigationView = findViewById(R.id.bottomNavBar);
+        //하단 네비게이션 바 설정 시작
+
+        frag_home = new Fragment_Home();
+        frag_plan = new Fragment_addPlanPage();
+        frag_calendar = new Fragment_calendar();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, frag_home).commit();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavBar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId())
-                {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
                     case R.id.action_home:
-                        setFrag(0);
-                        break;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, frag_home).commit();
+                        return true;
                     case R.id.action_plan:
-                        setFrag(1);
-                        break;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, frag_plan).commit();
+                        return true;
                     case R.id.action_calendar:
-                        setFrag(2);
-                        break;
+                        getSupportFragmentManager().beginTransaction().replace(R.id.framelayout, frag_calendar).commit();
+                        return true;
                 }
                 return false;
             }
         });
-        frag_home = new Fragment_Home();
-        frag_plan = new Fragment_addPlanPage();
-        frag_calendar = new Fragment_calendar();
-        setFrag(0);
-    }
-
-    //프래그먼트 교체
-    private void setFrag(int page)
-    {
-        fm = getSupportFragmentManager();
-        ft = fm.beginTransaction();
-        switch (page)
-        {
-            case 0:
-                ft.replace(R.id.framelayout, frag_home);
-                ft.commit();
-                break;
-            case 1:
-                ft.replace(R.id.framelayout, frag_plan);
-                ft.commit();
-                break;
-            case 2:
-                ft.replace(R.id.framelayout, frag_calendar);
-                ft.commit();
-                break;
-        }
+        //하단 네비게이션 바 설정 끝
     }
 }
