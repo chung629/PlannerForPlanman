@@ -62,8 +62,6 @@ public class Fragment_calendar extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         tvDate = (TextView) view.findViewById(R.id.tv_date);
         gridView = (GridView)view.findViewById(R.id.gridview);
-        Button leftButton = view.findViewById(R.id.leftCalendar);
-        Button rightButton = view.findViewById(R.id.rightCalendar);
 
         // 오늘에 날짜를 세팅 해준다.
         long now = System.currentTimeMillis();
@@ -90,15 +88,6 @@ public class Fragment_calendar extends Fragment {
 
         gridAdapter = new GridAdapter(view.getContext(), dayList);
         gridView.setAdapter(gridAdapter);
-
-        // 버튼 관련
-        leftButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                
-            }
-        });
-
 
         return view;
     }
@@ -181,9 +170,7 @@ public class Fragment_calendar extends Fragment {
             return convertView;
         }
     }
-
     private class ViewHolder {
         TextView tvItemGridView;
     }
-
 }
