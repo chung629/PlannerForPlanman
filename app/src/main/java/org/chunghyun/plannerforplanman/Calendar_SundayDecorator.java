@@ -9,11 +9,11 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 
 import java.util.Calendar;
 
-public class SundayDecorator implements DayViewDecorator {
+public class Calendar_SundayDecorator implements DayViewDecorator {
 
     private final Calendar calendar = Calendar.getInstance();
 
-    public SundayDecorator() {
+    public Calendar_SundayDecorator() {
     }
 
     @Override

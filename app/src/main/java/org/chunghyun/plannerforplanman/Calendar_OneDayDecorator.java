@@ -13,11 +13,11 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.Date;
 
-public class OneDayDecorator implements DayViewDecorator {
+public class Calendar_OneDayDecorator implements DayViewDecorator {
 
     private CalendarDay date;
 
-    public OneDayDecorator() {
+    public Calendar_OneDayDecorator() {
         date = CalendarDay.today();
     }
 
@@ -29,8 +29,7 @@ public class OneDayDecorator implements DayViewDecorator {
     @Override
     public void decorate(DayViewFacade view) {
         view.addSpan(new StyleSpan(Typeface.BOLD));
-        view.addSpan(new RelativeSizeSpan(1.4f));
-        view.addSpan(new ForegroundColorSpan(Color.GREEN));
+        view.addSpan(new RelativeSizeSpan(1.2f));
     }
 
     /**

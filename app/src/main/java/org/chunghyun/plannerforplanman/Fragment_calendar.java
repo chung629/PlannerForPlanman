@@ -6,17 +6,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import android.content.Context;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -47,9 +38,8 @@ public class Fragment_calendar extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-        materialCalendarView = view.findViewById(R.id.calendarView);
-
+        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_calendar, container, false);
+        initUI(rootView);
         // 달력의 시작과 끝 지정
         materialCalendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -60,9 +50,13 @@ public class Fragment_calendar extends Fragment {
 
         // 달력 효과 지정
         materialCalendarView.addDecorators(
-                new SundayDecorator(),
-                new SaturdayDecorator(),
-                new OneDayDecorator());
-        return view;
+                new Calendar_SundayDecorator(),
+                new Calendar_SaturdayDecorator(),
+                new Calendar_OneDayDecorator());
+
+        return rootView;
+    }
+    private void initUI(ViewGroup rootView){
+        materialCalendarView = rootView.findViewById(R.id.calendarView);
     }
 }
