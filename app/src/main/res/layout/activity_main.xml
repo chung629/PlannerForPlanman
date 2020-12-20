@@ -18,6 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_navigation_menu">
+
         </com.google.android.material.bottomnavigation.BottomNavigationView>
+
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

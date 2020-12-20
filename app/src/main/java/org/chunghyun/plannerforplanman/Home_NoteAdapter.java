@@ -79,7 +79,7 @@ public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.View
 
             layout1 = itemView.findViewById(R.id.layout1);
 
-            state_progress = itemView.findViewById(R.id.state_progress);
+            //state_progress = itemView.findViewById(R.id.state_progress);
 
             startDate = itemView.findViewById(R.id.startDate);
             content = itemView.findViewById(R.id.contentsTextView);

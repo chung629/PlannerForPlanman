@@ -5,4 +5,6 @@
     <string name="menu_home">홈</string>
     <string name="menu_plan">계획</string>
     <string name="menu_calendar">일정</string>
+    <string name="admob_app_id">ca-app-pub-1037645698232256~3588749852</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1037645698232256/2115886087</string>
 </resources>
