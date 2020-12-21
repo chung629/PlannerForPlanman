@@ -15,7 +15,6 @@
          />
 
     <LinearLayout
-        android:id="@+id/startdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -53,7 +52,7 @@
             android:text="시작날짜" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/startdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -74,16 +73,33 @@
             android:text="종료 날짜" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/enddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="TextView" />
+
     </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="저장" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소" />
+    </LinearLayout>
 
 </LinearLayout>

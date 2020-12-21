@@ -1,5 +1,6 @@
 package org.chunghyun.plannerforplanman;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -42,8 +43,10 @@ public class Fragment_Home extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Home_CustomDialog customDialog = new Home_CustomDialog(rootView.getContext());
+                customDialog.callFunction();
             }
+
         });
         //test 메시지
         adapter.addItem(new Home_Note(0, "20201201", "20201218", "안녕하세요"));
