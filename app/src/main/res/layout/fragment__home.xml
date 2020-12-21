@@ -26,6 +26,6 @@
         android:layout_marginRight="30dp"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
-        android:contentDescription="TODO" />
+        />
 
 </FrameLayout>
