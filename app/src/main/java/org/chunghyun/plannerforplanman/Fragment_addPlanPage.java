@@ -37,7 +37,8 @@ public class Fragment_addPlanPage extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Add_Plan_CustomDialog customDialog = new Add_Plan_CustomDialog(rootView.getContext());
+                customDialog.callFunction();
             }
         });
         //test 메시지

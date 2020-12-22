@@ -10,15 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.ViewHolder>
-        implements OnNoteItemClickListener {
+        implements Home_OnNoteItemClickListener {
 
     ArrayList<Home_Note> items = new ArrayList<Home_Note>();
-    OnNoteItemClickListener listener;
+    Home_OnNoteItemClickListener listener;
 
     int layoutType = 0;
 
@@ -55,7 +53,7 @@ public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.View
         return items.get(position);
     }
 
-    public void setOnItemClickListener(OnNoteItemClickListener listener){
+    public void setOnItemClickListener(Home_OnNoteItemClickListener listener){
         this.listener = listener;
     }
 
@@ -74,7 +72,7 @@ public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.View
         TextView content;
         TextView curDate;
 
-        public ViewHolder(View itemView, final OnNoteItemClickListener listener, int layoutType){
+        public ViewHolder(View itemView, final Home_OnNoteItemClickListener listener, int layoutType){
             super(itemView);
 
             layout1 = itemView.findViewById(R.id.layout1);
@@ -89,7 +87,8 @@ public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Home_CustomDialog customDialog = new Home_CustomDialog(itemView.getContext());
+                    customDialog.callFunction();
                 }
             });
         }
