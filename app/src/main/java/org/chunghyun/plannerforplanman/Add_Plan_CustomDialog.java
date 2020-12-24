@@ -2,47 +2,55 @@ package org.chunghyun.plannerforplanman;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Add_Plan_CustomDialog {
-    private Context context;
+public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListener{
+    private EditText content;
+    private Button ok;
+    private Button cancel;
+    CustomDialogListener customDialogListener;
 
-    public Add_Plan_CustomDialog(Context context){
-        this.context = context;
+    public Add_Plan_CustomDialog(Context context){ super(context); }
+
+    interface CustomDialogListener{
+        void onPositiveClicked(String content);
+        void onNegativeClicked();
+    }
+    //호출할 리스너 초기화
+    public void setDialogListener(Add_Plan_CustomDialog.CustomDialogListener customDialogListener){
+        this.customDialogListener = customDialogListener;
     }
 
-    public void callFunction(){
-        final Dialog dig = new Dialog(context);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.addplan_fab_dialog);
+        // 위젯 정의
+        content = findViewById(R.id.content);
+        ok = findViewById(R.id.confirm);
+        cancel = findViewById(R.id.cancel);
+        //버튼 리스너 정의
+        ok.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+    }
 
-        // 액티비티의 타이틀바를 숨긴다.
-        dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        dig.setContentView(R.layout.addplan_fab_dialog);
-        dig.show();
-
-        // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        final EditText content = dig.findViewById(R.id.content);
-        final Button ok = dig.findViewById(R.id.confirm);
-        final Button cancel = dig.findViewById(R.id.cancel);
-
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "저장되었습니다", Toast.LENGTH_SHORT).show();
-                dig.dismiss();
-            }
-        });
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dig.dismiss();
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.confirm:
+                customDialogListener.onPositiveClicked(content.getText().toString());
+                dismiss();
+                break;
+            case R.id.cancel:
+                cancel();
+                break;
+        }
     }
 }

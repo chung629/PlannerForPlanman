@@ -1,5 +1,7 @@
 package org.chunghyun.plannerforplanman;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,89 +9,94 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Add_Plan_PageAdapter extends RecyclerView.Adapter<Add_Plan_PageAdapter.ViewHolder>
-    implements Add_Plan_OnNoteItemClickListener {
+public class Add_Plan_PageAdapter extends RecyclerView.Adapter<Add_Plan_PageAdapter.CustomViewHolder> {
 
-    ArrayList<Add_Plan_Note> items = new ArrayList<Add_Plan_Note>();
-    int layoutType = 0;
-    Add_Plan_OnNoteItemClickListener listener;
+    private Context context;
+    ArrayList<Add_Plan_Note> items;
+    ViewGroup rootView;
+
+    public Add_Plan_PageAdapter(Context context, ArrayList<Add_Plan_Note> items){
+        this.context = context;
+        this.items = items;
+    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = inflater.inflate(R.layout.item_add_plan, viewGroup, false);
-
-        return new ViewHolder(itemView, listener, layoutType);
+    public Add_Plan_PageAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        rootView = viewGroup;
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_add_plan, viewGroup, false);
+        CustomViewHolder holder = new CustomViewHolder(view);
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Add_Plan_Note item = items.get(position);
-        holder.setItem(item);
-        holder.setLayoutType(layoutType);
+    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+        // 데이터셋에서 가져온 데이터를 뷰에 넣는 함수
+        holder.content.setText(items.get(position).getContent());
+        // 체크 박스 이벤트
+        holder.complete.setOnClickListener(new CheckBox.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(holder.complete.isChecked()){
+                    holder.content.setTextColor(ContextCompat.getColor(context, R.color.checked));
+                }else{
+                    holder.content.setTextColor(Color.BLACK);
+                }
+            }
+        });
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 아이템 길게 눌렀을때 액션
+                return true;
+            }
+        });
     }
+
+
     @Override
     public int getItemCount() {
         return items.size();
     }
 
+    // 아이템 추가
     public void addItem(Add_Plan_Note item){
         items.add(item);
+        notifyDataSetChanged();
     }
 
-    public void setItems(ArrayList<Add_Plan_Note> items){
-        this.items = items;
+    // 아이템 삭제
+    public void remove(int position){
+        try{
+            items.remove(position);
+            notifyItemRemoved(position);
+        }catch (IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+        }
     }
 
-    public Add_Plan_Note getItem(int position){
-        return items.get(position);
-    }
-
-    public void setOnItemClickListener(Add_Plan_OnNoteItemClickListener listener){
-        this.listener = listener;
-    }
-
-    @Override
-    public void onItemClick(Add_Plan_PageAdapter.ViewHolder holder, View view, int position) {
-        if(listener != null)
-            listener.onItemClick(holder, view, position);
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder{
-        LinearLayout layout2;
-
-        CheckBox isComplete;
+    static class CustomViewHolder extends RecyclerView.ViewHolder{
+        LinearLayout layout;
         TextView content;
+        CheckBox complete;
 
-        public ViewHolder(View itemView, final Add_Plan_OnNoteItemClickListener listener, int layoutType){
+        public CustomViewHolder(View itemView){
             super(itemView);
-            layout2 = itemView.findViewById(R.id.layout2);
-            isComplete = itemView.findViewById(R.id.isComplete);
-            content = itemView.findViewById(R.id.todaycontent);
-
-            // 메모 칸 press event
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Add_Plan_CustomDialog customDialog = new Add_Plan_CustomDialog(itemView.getContext());
-                    customDialog.callFunction();
-                }
-            });
-        }
-
-        public void setItem(Add_Plan_Note item){
-            isComplete.setChecked(item.isComplete());
-            content.setText(item.getContent());
-        }
-        public void setLayoutType(int layoutType){
-            if(layoutType == 0)
-                layout2.setVisibility(View.VISIBLE);
+            layout = itemView.findViewById(R.id.layout2);
+            content = (TextView)itemView.findViewById(R.id.todaycontent);
+            complete = (CheckBox)itemView.findViewById(R.id.isComplete);
         }
     }
-
 }

@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class Fragment_addPlanPage extends Fragment {
+import java.util.ArrayList;
 
-    RecyclerView recyclerView2;
-    Add_Plan_PageAdapter adapter;
+public class Fragment_addPlanPage extends Fragment implements View.OnClickListener{
+
+    private ArrayList<Add_Plan_Note> noteItem;
+    private Add_Plan_PageAdapter adapter;
+    private RecyclerView recyclerView;
+    private ViewGroup rootView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,25 +28,42 @@ public class Fragment_addPlanPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_plan_page, container, false);
-        initUI(rootView);
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_add_plan_page, container, false);
+        initUI();
+
         return rootView;
     }
-    private void initUI(ViewGroup rootView){
-        recyclerView2 = rootView.findViewById(R.id.recyclerview2);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView2.setLayoutManager(layoutManager);
-        adapter = new Add_Plan_PageAdapter();
-        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Add_Plan_CustomDialog customDialog = new Add_Plan_CustomDialog(rootView.getContext());
-                customDialog.callFunction();
-            }
-        });
+    // 레이아웃 변수 할당
+    private void initUI(){
+        recyclerView = rootView.findViewById(R.id.recyclerview2);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        noteItem = new ArrayList<Add_Plan_Note>();
+        adapter = new Add_Plan_PageAdapter(getActivity(), noteItem);
         //test 메시지
         adapter.addItem(new Add_Plan_Note(false, "내용 부분입니다"));
-        recyclerView2.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fab:
+                Add_Plan_CustomDialog dialog = new Add_Plan_CustomDialog(rootView.getContext());
+                dialog.setDialogListener(new Add_Plan_CustomDialog.CustomDialogListener(){
+                    @Override
+                    public void onPositiveClicked(String content) {
+                        noteItem.add(new Add_Plan_Note(false, content));
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onNegativeClicked() { }
+                });
+                dialog.show();
+                break;
+        }
     }
 }

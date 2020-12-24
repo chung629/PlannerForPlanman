@@ -2,51 +2,83 @@ package org.chunghyun.plannerforplanman;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class Home_CustomDialog {
-    private Context context;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Home_CustomDialog extends Dialog implements View.OnClickListener{
+    private EditText projectName;
+    private EditText startyear;
+    private EditText startmonth;
+    private EditText startday;
+    private EditText endyear;
+    private EditText endmonth;
+    private EditText endday;
+    private Button positiveButton;
+    private Button negativeButton;
+    CustomDialogListener customDialogListener;
 
     public Home_CustomDialog(Context context){
-        this.context = context;
+        super(context);
     }
 
-    public void callFunction(){
-        final Dialog dig = new Dialog(context);
+    interface CustomDialogListener{
+        void onPositiveClicked(String name, String start, String end);
+        void onNegativeClicked();
+    }
 
-        // 액티비티의 타이틀바를 숨긴다.
-        dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
+    //호출할 리스너 초기화
+    public void setDialogListener(CustomDialogListener customDialogListener){
+        this.customDialogListener = customDialogListener;
+    }
 
-        // 커스텀 다이얼로그의 레이아웃을 설정한다.
-        dig.setContentView(R.layout.home_fab_dialog);
-
-        dig.show();
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_fab_dialog);
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        final EditText projectName = dig.findViewById(R.id.projectname);
-        final EditText totalUnit = dig.findViewById(R.id.totalUnit);
-        final TextView startdate = dig.findViewById(R.id.startDate);
-        final TextView enddate = dig.findViewById(R.id.enddate);
-        final Button okButton = dig.findViewById(R.id.ok);
-        final Button cancelButton = dig.findViewById(R.id.cancel);
-
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "저장되었습니다", Toast.LENGTH_SHORT).show();
-                dig.dismiss();
-            }
-        });
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dig.dismiss();
-            }
-        });
+        projectName = findViewById(R.id.projectname);
+        startyear = findViewById(R.id.startyear);
+        startmonth = findViewById(R.id.startmonth);
+        startday = findViewById(R.id.startday);
+        endyear = findViewById(R.id.endyear);
+        endmonth = findViewById(R.id.endmonth);
+        endday = findViewById(R.id.endday);
+        positiveButton = findViewById(R.id.ok);
+        negativeButton = findViewById(R.id.cancel);
+        // 버튼 클릭 리스너 등록
+        positiveButton.setOnClickListener(this);
+        negativeButton.setOnClickListener(this);
     }
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()){
+            case R.id.ok: // 확인 버튼
+                //변수에 저장된 값 전달
+                String startDate = startyear.getText().toString() + "-" + startmonth.getText().toString() + "-" + startday.getText().toString();
+                String endDate = endyear.getText().toString() + "-" + endmonth.getText().toString() + "-" + endday.getText().toString();
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+                    Date SecondDate = format.parse(endDate);
+                    long curTime = format.parse(format.format(System.currentTimeMillis())).getTime();
+                    long calDate = curTime - SecondDate.getTime();
+                    long calDateDays = Math.abs(calDate / (24*60*60*1000)) + 1;
+                    customDialogListener.onPositiveClicked(projectName.getText().toString(), "시작 : " + startDate, "D-Day " + calDateDays);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                dismiss();
+                break;
+            case R.id.cancel:
+                cancel();
+                break;
+        }
+    }
+
 }

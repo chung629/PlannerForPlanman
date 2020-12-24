@@ -1,47 +1,38 @@
 package org.chunghyun.plannerforplanman;
 
 public class Home_Note {
-    int _id;
+    String name;    // 책 이름
     String startDate;   // 시작 날짜
-    String curDate;     // 현재 진행 일수
-    String contents;    // 내용
+    String endDate;     // 목표 날짜
 
-    public Home_Note(int _id, String startDate, String curDate, String contents){
-        this._id = _id;
+    public Home_Note(String name, String startDate, String endDate){
+        this.name = name;
         this.startDate = startDate;
-        this.curDate = curDate;
-        this.contents = contents;
+        this.endDate = endDate;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
+    public String getName() {
+        return name;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public void setCurDate(String curDate) {
-        this.curDate = curDate;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public int get_id() {
-        return _id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getStartDate() {
         return startDate;
     }
 
-    public String getCurDate() {
-        return curDate;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
-    public String getContents() {
-        return contents;
+    public String getEndDate() {
+        return endDate;
     }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
 }

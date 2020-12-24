@@ -1,8 +1,10 @@
 package org.chunghyun.plannerforplanman;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -12,28 +14,61 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.ViewHolder>
-        implements Home_OnNoteItemClickListener {
+public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.CustomViewHolder> {
 
-    ArrayList<Home_Note> items = new ArrayList<Home_Note>();
-    Home_OnNoteItemClickListener listener;
+    private Context context;
+    ArrayList<Home_Note> items;
+    ViewGroup rootView;
 
-    int layoutType = 0;
+    public Home_NoteAdapter(Context context, ArrayList<Home_Note> items){
+        this.context = context;
+        this.items = items;
+    }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View itemView = inflater.inflate(R.layout.item_home_fragment, viewGroup, false);
+    public Home_NoteAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 
-        return new ViewHolder(itemView, this, layoutType);
+        rootView = viewGroup;
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home_fragment, viewGroup, false);
+        CustomViewHolder holder = new CustomViewHolder(view);
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Home_Note item = items.get(position);
-        holder.setItem(item);
-        holder.setLayoutType(layoutType);
+    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
+        // 데이터셋에서 가져온 데이터를 뷰에 넣는 함수
+        holder.name.setText(items.get(position).getName());
+        holder.startDate.setText(items.get(position).getStartDate());
+        holder.endDate.setText(items.get(position).getEndDate());
+
+        holder.itemView.setTag(position);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 아이템 클릭시 액션
+                Home_CustomDialog dialog = new Home_CustomDialog(rootView.getContext());
+                dialog.setDialogListener(new Home_CustomDialog.CustomDialogListener(){
+                    @Override
+                    public void onPositiveClicked(String name, String start, String end) {
+                        Home_Note home_note = new Home_Note(name, start, end);
+                        items.add(home_note);
+                        notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onNegativeClicked() { }
+                });
+                dialog.show();
+            }
+        });
+        
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // 아이템 길게 눌렀을때 액션
+                return true;
+            }
+        });
     }
 
     @Override
@@ -41,68 +76,35 @@ public class Home_NoteAdapter extends RecyclerView.Adapter<Home_NoteAdapter.View
         return items.size();
     }
 
+    // 아이템 삭제
+    public void remove(int position){
+        try{
+            items.remove(position);
+            notifyItemRemoved(position);
+        }catch (IndexOutOfBoundsException ex){
+            ex.printStackTrace();
+        }
+    }
+    // 아이템 추가
     public void addItem(Home_Note item){
         items.add(item);
+        notifyDataSetChanged();
     }
-
-    public void setItems(ArrayList<Home_Note> items){
-        this.items = items;
-    }
-
-    public Home_Note getItem(int position){
-        return items.get(position);
-    }
-
-    public void setOnItemClickListener(Home_OnNoteItemClickListener listener){
-        this.listener = listener;
-    }
-
-    @Override
-    public void onItemClick(ViewHolder holder, View view, int position) {
-        if(listener != null)
-            listener.onItemClick(holder, view, position);
-    }
-
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    public class CustomViewHolder extends RecyclerView.ViewHolder{
         LinearLayout layout1;
-
-        ProgressBar state_progress;
-
+        TextView name;
         TextView startDate;
-        TextView content;
-        TextView curDate;
+        TextView endDate;
+//        ProgressBar state_progress;
 
-        public ViewHolder(View itemView, final Home_OnNoteItemClickListener listener, int layoutType){
+        public CustomViewHolder(View itemView){
             super(itemView);
-
             layout1 = itemView.findViewById(R.id.layout1);
-
-            //state_progress = itemView.findViewById(R.id.state_progress);
-
+            name = itemView.findViewById(R.id.bookname);
             startDate = itemView.findViewById(R.id.startDate);
-            content = itemView.findViewById(R.id.contentsTextView);
-            curDate = itemView.findViewById(R.id.curDay);
+            endDate = itemView.findViewById(R.id.dday);
+//            state_progress = itemView.findViewById(R.id.state_progress);
 
-            // 메모 칸 press event
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Home_CustomDialog customDialog = new Home_CustomDialog(itemView.getContext());
-                    customDialog.callFunction();
-                }
-            });
-        }
-        public void setItem(Home_Note item){
-            // 프로그래스바 작성
-
-            // 프로그래스바 작성 끝
-            startDate.setText(item.getStartDate());
-            content.setText(item.getContents());
-            curDate.setText(item.getCurDate());
-        }
-        public void setLayoutType(int layoutType){
-            if(layoutType == 0)
-                layout1.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -41,7 +41,6 @@ public class Fragment_calendar extends Fragment {
                 new Calendar_SundayDecorator(),
                 new Calendar_SaturdayDecorator(),
                 new Calendar_OneDayDecorator());
-
         return rootView;
     }
     private void initUI(ViewGroup rootView){
