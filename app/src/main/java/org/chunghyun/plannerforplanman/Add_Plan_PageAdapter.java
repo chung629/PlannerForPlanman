@@ -50,6 +50,7 @@ public class Add_Plan_PageAdapter extends RecyclerView.Adapter<Add_Plan_PageAdap
             }
         });
         holder.itemView.setTag(position);
+        // 내용 수정
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
