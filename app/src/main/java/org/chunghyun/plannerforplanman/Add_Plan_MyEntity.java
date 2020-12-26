@@ -9,10 +9,12 @@ public class Add_Plan_MyEntity {
 
     @PrimaryKey(autoGenerate =  true)
     int id;
+    int isChecked;
     String content;
 
-    public Add_Plan_MyEntity(String content){
+    public Add_Plan_MyEntity(String content, int isChecked){
         this.content = content;
+        this.isChecked = isChecked;
     }
 
     public int getId() {
@@ -31,12 +33,21 @@ public class Add_Plan_MyEntity {
         this.content = content;
     }
 
+    public int getIsChecked() {
+        return isChecked;
+    }
+
+    public void setIsChecked(int isChecked) {
+        this.isChecked = isChecked;
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "RecordData{" +
                 "id='" + id + '\'' +
                 ", content='" + content + '\'' +
+                ", isChecked='" + isChecked + '\'' +
                 '}';
     }
 }

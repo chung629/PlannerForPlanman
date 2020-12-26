@@ -9,7 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
-
+// 수정 할 필요 없 12/27
 @Dao
 public interface Add_Plan_MyDao {
 

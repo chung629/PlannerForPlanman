@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,17 +56,32 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
             super(itemView);
             content = (TextView)itemView.findViewById(R.id.todaycontent);
             complete = (CheckBox)itemView.findViewById(R.id.isComplete);
+            complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        editData(content.getText().toString(), 1);
+                    }else{
+                        editData(content.getText().toString(), 0);
+                    }
+                }
+            });
         }
         public void onBind(Add_Plan_MyEntity memo, int position){
             index = position;
             content.setText(memo.getContent());
-            complete.setChecked(false);// 수정 필요
+            if(memo.isChecked == 0)
+                complete.setChecked(false);
+            else
+                complete.setChecked(true);
         }
 
         // 일정 수정
-        public void editData(String contents){
+        public void editData(String contents, int isChecked){
             new Thread(()->{
                 items.get(index).setContent(contents);
+                items.get(index).setIsChecked(isChecked);
                 db.myDao().update(items.get(index));
             }).start();
         }

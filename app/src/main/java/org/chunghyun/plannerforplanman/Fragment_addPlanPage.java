@@ -77,14 +77,12 @@ public class Fragment_addPlanPage extends Fragment implements View.OnClickListen
                     public void onPositiveClicked(String content) {
                         if (!content.equals("")) {
                             new Thread(() -> {
-                                Add_Plan_MyEntity memo = new Add_Plan_MyEntity(content);
+                                Add_Plan_MyEntity memo = new Add_Plan_MyEntity(content, 0);
                                 db.myDao().insert(memo);
                             }).start();
                         } else
                             Toast.makeText(rootView.getContext(), "한 글자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-                        ;
                     }
-
                     @Override
                     public void onNegativeClicked() {
                     }
