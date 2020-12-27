@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Home_Plan;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import org.chunghyun.plannerforplanman.R;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,9 +16,6 @@ import java.util.Date;
 public class Home_CustomDialog extends Dialog implements View.OnClickListener{
     private EditText bookName;
     private EditText totalUnit;
-    private EditText startyear;
-    private EditText startmonth;
-    private EditText startday;
     private EditText endyear;
     private EditText endmonth;
     private EditText endday;
@@ -29,7 +28,7 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
     }
 
     interface CustomDialogListener{
-        void onPositiveClicked(String bookName, int totalUnit, long dDay);
+        void onPositiveClicked(String bookName, int totalUnit, int dDay);
         void onNegativeClicked();
     }
 
@@ -45,9 +44,6 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
         bookName = findViewById(R.id.projectname);
         totalUnit = findViewById(R.id.totalUnit);
-        startyear = findViewById(R.id.startyear);
-        startmonth = findViewById(R.id.startmonth);
-        startday = findViewById(R.id.startday);
         endyear = findViewById(R.id.endyear);
         endmonth = findViewById(R.id.endmonth);
         endday = findViewById(R.id.endday);
@@ -62,7 +58,6 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
         switch(v.getId()){
             case R.id.ok: // 확인 버튼
                 //변수에 저장된 값 전달
-                String startDate = startyear.getText().toString() + "-" + startmonth.getText().toString() + "-" + startday.getText().toString();
                 String endDate = endyear.getText().toString() + "-" + endmonth.getText().toString() + "-" + endday.getText().toString();
                 try {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
@@ -70,7 +65,7 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
                     long curTime = format.parse(format.format(System.currentTimeMillis())).getTime();
                     long calDate = curTime - SecondDate.getTime();
                     long calDateDays = Math.abs(calDate / (24*60*60*1000)) + 1;
-                    customDialogListener.onPositiveClicked(bookName.getText().toString(), Integer.parseInt(totalUnit.getText().toString()), calDateDays);
+                    customDialogListener.onPositiveClicked(bookName.getText().toString(), Integer.parseInt(totalUnit.getText().toString()), (int)calDateDays);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

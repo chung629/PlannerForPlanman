@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Add_Plan;
 
 import android.content.Context;
 

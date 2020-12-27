@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Home_Plan;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.chunghyun.plannerforplanman.R;
 
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
                 Home_CustomDialog dialog = new Home_CustomDialog(rootView.getContext());
                 dialog.setDialogListener(new Home_CustomDialog.CustomDialogListener(){
                     @Override
-                    public void onPositiveClicked(String bookName, int totalUnit, long dDay) {
+                    public void onPositiveClicked(String bookName, int totalUnit, int dDay) {
                         if (!bookName.equals("")) {
                             new Thread(() -> {
                                 Home_Plan_Entity memo = new Home_Plan_Entity(bookName, totalUnit, dDay);

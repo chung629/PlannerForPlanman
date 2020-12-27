@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Home_Plan;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.chunghyun.plannerforplanman.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +66,7 @@ public class Home_Plan_homeAdapter extends RecyclerView.Adapter<Home_Plan_homeAd
             dDay.setText("D-day " + memo.getdDay());
         }
         // 일정 수정
-        public void editData(String bookName, int totalUnit, long dDay){
+        public void editData(String bookName, int totalUnit, int dDay){
             new Thread(()->{
                 items.get(index).setBookName(bookName);
                 items.get(index).setTotalUnit(totalUnit);

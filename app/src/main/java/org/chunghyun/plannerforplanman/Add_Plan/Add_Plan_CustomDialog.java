@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Add_Plan;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import org.chunghyun.plannerforplanman.R;
 
 public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListener{
     private EditText content;

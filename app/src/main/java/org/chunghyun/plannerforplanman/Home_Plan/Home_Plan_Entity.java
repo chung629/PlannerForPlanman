@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman;
+package org.chunghyun.plannerforplanman.Home_Plan;
 
 
 import androidx.annotation.NonNull;
@@ -12,10 +12,10 @@ public class Home_Plan_Entity {
     int id;
     String bookName;
     int totalUnit;
-    long dDay;
+    int dDay;
 
 
-    public Home_Plan_Entity(String bookName, int totalUnit, long dDay){
+    public Home_Plan_Entity(String bookName, int totalUnit, int dDay){
         this.bookName = bookName;
         this.totalUnit = totalUnit;
         this.dDay = dDay;
@@ -45,11 +45,11 @@ public class Home_Plan_Entity {
         this.totalUnit = totalUnit;
     }
 
-    public long getdDay() {
+    public int getdDay() {
         return dDay;
     }
 
-    public void setdDay(long dDay) {
+    public void setdDay(int dDay) {
         this.dDay = dDay;
     }
 

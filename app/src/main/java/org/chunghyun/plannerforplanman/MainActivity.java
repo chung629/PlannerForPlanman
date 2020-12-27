@@ -1,15 +1,16 @@
 package org.chunghyun.plannerforplanman;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.chunghyun.plannerforplanman.Add_Plan.Fragment_addPlanPage;
+import org.chunghyun.plannerforplanman.Calendar.Fragment_calendar;
+import org.chunghyun.plannerforplanman.Home_Plan.Fragment_Home;
 
 public class MainActivity extends AppCompatActivity {
 
