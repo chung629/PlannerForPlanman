@@ -9,22 +9,22 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
-// 특정 쿼리 작성
+
 @Dao
-public interface Add_Plan_MyDao {
+public interface Home_Plan_dao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE) // 중복 ID일경우 교체
-    public void insert(Add_Plan_MyEntity entity);
+    public void insert(Home_Plan_Entity entity);
 
     @Update
-    void update(Add_Plan_MyEntity myEntity);
+    void update(Home_Plan_Entity myEntity);
 
     @Delete
-    public void delete(Add_Plan_MyEntity entity);
+    public void delete(Home_Plan_Entity entity);
 
-    @Query("DELETE FROM myDatabase")
+    @Query("DELETE FROM homeDatabase")
     public void deleteAll();
 
-    @Query("SELECT * FROM myDatabase")
-    public LiveData<List<Add_Plan_MyEntity>> getAll();
+    @Query("SELECT * FROM homeDatabase")
+    public LiveData<List<Home_Plan_Entity>> getAll();
 }

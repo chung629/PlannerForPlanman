@@ -46,7 +46,6 @@ public class Fragment_addPlanPage extends Fragment implements View.OnClickListen
     // 레이아웃 변수 할당
     private void initUI() {
 
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview2);
         initSwipe();
         db = Add_Plan_MyDatabase.getDatabase(getContext());

@@ -9,11 +9,11 @@ import android.widget.EditText;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class Home_CustomDialog extends Dialog implements View.OnClickListener{
-    private EditText projectName;
+    private EditText bookName;
+    private EditText totalUnit;
     private EditText startyear;
     private EditText startmonth;
     private EditText startday;
@@ -29,7 +29,7 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
     }
 
     interface CustomDialogListener{
-        void onPositiveClicked(String name, String start, String end);
+        void onPositiveClicked(String bookName, int totalUnit, long dDay);
         void onNegativeClicked();
     }
 
@@ -43,7 +43,8 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_fab_dialog);
         // 커스텀 다이얼로그의 각 위젯들을 정의한다.
-        projectName = findViewById(R.id.projectname);
+        bookName = findViewById(R.id.projectname);
+        totalUnit = findViewById(R.id.totalUnit);
         startyear = findViewById(R.id.startyear);
         startmonth = findViewById(R.id.startmonth);
         startday = findViewById(R.id.startday);
@@ -69,7 +70,7 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
                     long curTime = format.parse(format.format(System.currentTimeMillis())).getTime();
                     long calDate = curTime - SecondDate.getTime();
                     long calDateDays = Math.abs(calDate / (24*60*60*1000)) + 1;
-                    customDialogListener.onPositiveClicked(projectName.getText().toString(), "시작 : " + startDate, "D-Day " + calDateDays);
+                    customDialogListener.onPositiveClicked(bookName.getText().toString(), Integer.parseInt(totalUnit.getText().toString()), calDateDays);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

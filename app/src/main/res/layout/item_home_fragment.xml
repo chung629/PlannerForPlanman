@@ -49,14 +49,12 @@
                 android:layout_marginTop="10dp">
 
                 <TextView
-                    android:id="@+id/startDate"
+                    android:id="@+id/curUnit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="시작"
+                    android:text="현재 진행 단원"
                     android:textSize="16sp" />
 
                 <TextView
