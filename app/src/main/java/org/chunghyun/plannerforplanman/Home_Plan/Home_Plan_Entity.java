@@ -13,6 +13,7 @@ public class Home_Plan_Entity {
     String bookName;
     int totalUnit;
     int dDay;
+    int curUnit;
 
 
     public Home_Plan_Entity(String bookName, int totalUnit, int dDay){

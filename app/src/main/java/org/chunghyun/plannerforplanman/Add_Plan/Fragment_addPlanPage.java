@@ -1,29 +1,32 @@
-package org.chunghyun.plannerforplanman.Add_Plan;
+ package org.chunghyun.plannerforplanman.Add_Plan;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+ import android.graphics.Bitmap;
+ import android.graphics.Canvas;
+ import android.graphics.Color;
+ import android.graphics.Paint;
+ import android.graphics.RectF;
+ import android.os.Bundle;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.Observer;
+ import androidx.recyclerview.widget.ItemTouchHelper;
+ import androidx.recyclerview.widget.LinearLayoutManager;
+ import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.chunghyun.plannerforplanman.R;
+ import org.chunghyun.plannerforplanman.R;
 
-import java.util.List;
+ import java.text.SimpleDateFormat;
+ import java.util.Date;
+ import java.util.List;
+ import java.util.Locale;
 
-public class Fragment_addPlanPage extends Fragment implements View.OnClickListener {
+ public class Fragment_addPlanPage extends Fragment implements View.OnClickListener {
 
     private Add_Plan_MyListAdapter adapter;
     private RecyclerView recyclerView;
@@ -60,7 +63,7 @@ public class Fragment_addPlanPage extends Fragment implements View.OnClickListen
         fab.setOnClickListener(this);
 
         // UI 갱신
-        db.myDao().getAll().observe(getActivity(), new Observer<List<Add_Plan_MyEntity>>() {
+        db.myDao().getAll(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date())).observe(getActivity(), new Observer<List<Add_Plan_MyEntity>>() {
             @Override
             public void onChanged(List<Add_Plan_MyEntity> add_plan_myEntities) {
                 adapter.setItem(add_plan_myEntities);
@@ -78,7 +81,7 @@ public class Fragment_addPlanPage extends Fragment implements View.OnClickListen
                     public void onPositiveClicked(String content) {
                         if (!content.equals("")) {
                             new Thread(() -> {
-                                Add_Plan_MyEntity memo = new Add_Plan_MyEntity(content, 0);
+                                Add_Plan_MyEntity memo = new Add_Plan_MyEntity(content, 0, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()));
                                 db.myDao().insert(memo);
                             }).start();
                         } else

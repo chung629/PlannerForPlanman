@@ -62,6 +62,7 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
                 adapter.setItem(home_plan_entities);
             }
         });
+        // 프래그먼트간 데이터 이동
     }
     @Override
     public void onClick(View v) {

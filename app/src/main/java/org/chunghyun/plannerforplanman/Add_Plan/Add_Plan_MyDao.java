@@ -25,6 +25,6 @@ public interface Add_Plan_MyDao {
     @Query("DELETE FROM myDatabase")
     public void deleteAll();
 
-    @Query("SELECT * FROM myDatabase")
-    public LiveData<List<Add_Plan_MyEntity>> getAll();
+    @Query("SELECT * FROM myDatabase WHERE date LIKE :selectDate")
+    public LiveData<List<Add_Plan_MyEntity>> getAll(String selectDate);
 }

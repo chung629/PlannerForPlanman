@@ -5,9 +5,11 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 // 수정 할 필요 없 - 12/27
 @Database(version = 1, entities = {Add_Plan_MyEntity.class}, exportSchema = false)
+@TypeConverters({Converters.class})
 public abstract class Add_Plan_MyDatabase extends RoomDatabase {
 
     public abstract Add_Plan_MyDao myDao();

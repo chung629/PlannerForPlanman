@@ -11,10 +11,12 @@ public class Add_Plan_MyEntity {
     int id;
     int isChecked;
     String content;
+    String date;
 
-    public Add_Plan_MyEntity(String content, int isChecked){
+    public Add_Plan_MyEntity(String content, int isChecked, String date){
         this.content = content;
         this.isChecked = isChecked;
+        this.date = date;
     }
 
     public int getId() {
@@ -41,6 +43,14 @@ public class Add_Plan_MyEntity {
         this.isChecked = isChecked;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -48,6 +58,7 @@ public class Add_Plan_MyEntity {
                 "id='" + id + '\'' +
                 ", content='" + content + '\'' +
                 ", isChecked='" + isChecked + '\'' +
+                ", date='" + date + '\'' +
                 '}';
     }
 }

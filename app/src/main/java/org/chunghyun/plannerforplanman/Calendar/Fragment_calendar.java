@@ -1,117 +1,151 @@
 package org.chunghyun.plannerforplanman.Calendar;
 
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
+import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyDatabase;
+import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyEntity;
+import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyListAdapter;
 import org.chunghyun.plannerforplanman.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import static android.content.ContentValues.TAG;
+import java.util.List;
+import java.util.Locale;
 
 public class Fragment_calendar extends Fragment {
 
-    public int mCenterPosition;
-    private long mCurrentTime;
-    public ArrayList<Object> mCalendarList = new ArrayList<>();
-
-    public TextView textView;
-    public RecyclerView recyclerView;
-    private CalendarAdapter mAdapter;
-    private StaggeredGridLayoutManager manager;
-
+    MaterialCalendarView materialCalendarView;
+    ViewGroup rootView;
+    Add_Plan_MyListAdapter adapter;
+    private Add_Plan_MyDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_calendar, container, false);
-        initView(rootView);
-        initSet();
-        setRecycler();
+        rootView = (ViewGroup) inflater.inflate(R.layout.fragment_calendar, container, false);
+        initUI();
         return rootView;
     }
-    public void initView(View v){
 
-        textView = (TextView)v.findViewById(R.id.title);
-        recyclerView = (RecyclerView)v.findViewById(R.id.calendar);
+    // 레이아웃 변수
+    private void initUI(){
 
-    }
+        ScrollView scrollView = (ScrollView)rootView.findViewById(R.id.scrollMemo);
+        materialCalendarView = rootView.findViewById(R.id.calendarView);
+        // 달력의 시작과 끝 지정
+        materialCalendarView.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setMinimumDate(CalendarDay.from(1950, 0, 1))
+                .setMaximumDate(CalendarDay.from(2050, 11, 31))
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
+        // 달력 효과
+        materialCalendarView.addDecorators(
+                new SundayDecorator(),
+                new SaturdayDecorator(),
+                new OneDayDecorator(),
+                new WeekDayDecorator());
+        // 사이즈 조절
+        LinearLayout linearLayout = (LinearLayout)rootView.findViewById(R.id.calendarLayout);
+        // 달력 및 메모
+        RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.calendarDb);
+        db = Add_Plan_MyDatabase.getDatabase(getContext());
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new Add_Plan_MyListAdapter(db);
+        recyclerView.setAdapter(adapter);
 
-    public void initSet(){
+        // 클릭 이벤트
+        materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+                int Year = date.getYear();
+                int Month = date.getMonth() + 1;
+                int Day = date.getDay();
+                if(selected){
+                    materialCalendarView.addDecorators(new SelectDayDecorator(rootView.getContext(), date));
+                    db.myDao().getAll(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date.getDate())).observe(getActivity(), new Observer<List<Add_Plan_MyEntity>>() {
+                        @Override
+                        public void onChanged(List<Add_Plan_MyEntity> add_plan_myEntities) {
+                            adapter.setItem(add_plan_myEntities);
+                        }
+                    });
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+                    params.height = 1000;
+                    linearLayout.setLayoutParams(params);
+                    scrollView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    materialCalendarView.clearSelection();
+                }
+            }
+        });
+        }
+    // 특정 날짜에 효과 주기
+    private class ApiSimulator extends AsyncTask<Void, Void, List<CalendarDay>> {
 
-        initCalendarList();
+        String[] Time_Result;
 
-    }
-
-    public void initCalendarList() {
-        GregorianCalendar cal = new GregorianCalendar();
-        setCalendarList(cal);
-    }
-
-    private void setRecycler() {
-
-        if (mCalendarList == null) {
-            Log.w(TAG, "No Query, not initializing RecyclerView");
+        ApiSimulator(String[] Time_Result){
+            this.Time_Result = Time_Result;
         }
 
-        manager = new StaggeredGridLayoutManager(7, StaggeredGridLayoutManager.VERTICAL);
-
-        mAdapter = new CalendarAdapter(mCalendarList);
-
-        mAdapter.setCalendarList(mCalendarList);
-        recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(mAdapter);
-
-        if (mCenterPosition >= 0) {
-            recyclerView.scrollToPosition(mCenterPosition);
-        }
-    }
-
-    public void setCalendarList(GregorianCalendar cal) {
-
-
-        //setTitle(cal.getTimeInMillis());
-
-        ArrayList<Object> calendarList = new ArrayList<>();
-
-        for (int i = -300; i < 300; i++) {
+        @Override
+        protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
             try {
-                GregorianCalendar calendar = new GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1, 0, 0, 0);
-                if (i == 0) {
-                    mCenterPosition = calendarList.size();
-                }
-
-                // 타이틀
-                calendarList.add(calendar.getTimeInMillis());
-
-                int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1; //해당 월에 시작하는 요일 -1 을 하면 빈칸을 구할 수 있겠죠 ?
-                int max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당 월에 마지막 요일
-
-                // EMPTY 생성
-                for (int j = 0; j < dayOfWeek; j++) {
-                    calendarList.add(Keys.EMPTY);
-                }
-                for (int j = 1; j <= max; j++) {
-                    calendarList.add(new GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j));
-                }
-
-                // TODO : 결과값 넣을떄 여기다하면될듯
-
-            } catch (Exception e) {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+            Calendar calendar = Calendar.getInstance();
+            ArrayList<CalendarDay> dates = new ArrayList<>();
+
+            /*특정날짜 달력에 점표시해주는곳*/
+            /*월은 0이 1월 년,일은 그대로*/
+            //string 문자열인 Time_Result 을 받아와서 ,를 기준으로짜르고 string을 int 로 변환
+            for(int i = 0 ; i < Time_Result.length ; i ++){
+                CalendarDay day = CalendarDay.from(calendar);
+                String[] time = Time_Result[i].split(",");
+                int year = Integer.parseInt(time[0]);
+                int month = Integer.parseInt(time[1]);
+                int dayy = Integer.parseInt(time[2]);
+
+                dates.add(day);
+                calendar.set(year,month-1,dayy);
+            }
+
+            return dates;
         }
 
-        mCalendarList = calendarList;
+        @Override
+        protected void onPostExecute(@NonNull List<CalendarDay> calendarDays) {
+            super.onPostExecute(calendarDays);
+
+            if (isCancelled()) {
+                return;
+            }
+            materialCalendarView.addDecorator(new EventDecorator(Color.GREEN, calendarDays, getActivity()));
+        }
     }
 }
