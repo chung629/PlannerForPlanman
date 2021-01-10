@@ -14,4 +14,6 @@
     <color name="saturday">#FF87CEFA</color>
     <color name="sunday">#FFDC143C</color>
     <color name="checked">#FFDCDCDC</color>
+    <color name="allBackGround">#DFF5F5DC</color>
+    <color name="adapterColor">#FFF5F5DC</color>
 </resources>

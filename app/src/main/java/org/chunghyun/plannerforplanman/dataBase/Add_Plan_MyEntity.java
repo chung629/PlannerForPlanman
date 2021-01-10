@@ -1,22 +1,24 @@
-package org.chunghyun.plannerforplanman.Add_Plan;
+package org.chunghyun.plannerforplanman.dataBase;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "myDatabase")
+@Entity(tableName = "addPlanDatabase")
 public class Add_Plan_MyEntity {
 
     @PrimaryKey(autoGenerate =  true)
     int id;
     int isChecked;
     String content;
+    int page;
     String date;
 
-    public Add_Plan_MyEntity(String content, int isChecked, String date){
+    public Add_Plan_MyEntity(String content, int isChecked, String date, int page){
         this.content = content;
         this.isChecked = isChecked;
         this.date = date;
+        this.page = page;
     }
 
     public int getId() {
@@ -51,6 +53,14 @@ public class Add_Plan_MyEntity {
         this.date = date;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -59,6 +69,7 @@ public class Add_Plan_MyEntity {
                 ", content='" + content + '\'' +
                 ", isChecked='" + isChecked + '\'' +
                 ", date='" + date + '\'' +
+                ", page='" + page + '\'' +
                 '}';
     }
 }

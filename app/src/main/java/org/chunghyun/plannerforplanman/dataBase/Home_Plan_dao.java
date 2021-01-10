@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman.Home_Plan;
+package org.chunghyun.plannerforplanman.dataBase;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -27,4 +27,20 @@ public interface Home_Plan_dao {
 
     @Query("SELECT * FROM homeDatabase")
     public LiveData<List<Home_Plan_Entity>> getAll();
+
+    @Query("SELECT totalUnit FROM homeDatabase WHERE bookName=:name")
+    public int getPage(String name);
+
+    @Query("UPDATE homeDatabase SET curUnit=:unitNum WHERE bookName=:name")
+    void curUnitUpdate(String name, int unitNum);
+
+    @Query("SELECT bookName FROM homeDatabase")
+    public List<String> getBookName();
+
+    //test
+    @Query("SELECT curUnit FROM homeDatabase WHERE bookName=:name")
+    public int getCur(String name);
+
+    @Query("DELETE FROM addPlanDatabase WHERE content LIKE   :name || '%'")
+    public void deleteAddPlan(String name);
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.chunghyun.plannerforplanman.R;
 
@@ -14,6 +15,7 @@ public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListene
     private Button ok;
     private Button cancel;
     CustomDialogListener customDialogListener;
+    String temp = new String();
 
     public Add_Plan_CustomDialog(Context context){ super(context); }
 
@@ -26,6 +28,9 @@ public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListene
         this.customDialogListener = customDialogListener;
     }
 
+    public void setText(String content){
+        temp = content;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +42,23 @@ public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListene
         //버튼 리스너 정의
         ok.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        // 클릭시 텍스트 세팅
+        if(temp != null){
+            content.setText(temp);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.confirm:
-                customDialogListener.onPositiveClicked(content.getText().toString());
-                dismiss();
+                String temp = content.getText().toString().trim();
+                if(temp.getBytes().length <= 0){
+                    Toast.makeText(getContext(), "한 글자 이상 입력 해주세요", Toast.LENGTH_SHORT).show();
+                }else {
+                    customDialogListener.onPositiveClicked(content.getText().toString());
+                    dismiss();
+                }
                 break;
             case R.id.cancel:
                 cancel();

@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman.Add_Plan;
+package org.chunghyun.plannerforplanman.dataBase;
 
 import androidx.room.TypeConverter;
 
@@ -12,8 +12,4 @@ public class Converters {
     public static String DateTimestamp(Date value) {
         return value == null ? null : new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(value);
     }
-//    @TypeConverter
-//    public static Long dateToTimestamp(Date date) {
-//        return date == null ? null : date.getTime();
-//    }
 }

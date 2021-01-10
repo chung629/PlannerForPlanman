@@ -1,6 +1,7 @@
 package org.chunghyun.plannerforplanman.Home_Plan;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chunghyun.plannerforplanman.R;
+import org.chunghyun.plannerforplanman.dataBase.Home_Plan_Entity;
+import org.chunghyun.plannerforplanman.dataBase.MyDatabase;
 
 import java.util.List;
 
@@ -27,7 +30,7 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
 
     private Home_Plan_homeAdapter adapter;
     private RecyclerView recyclerView;
-    private Home_Plan_homeDatabase db;
+    private MyDatabase db;
     private ViewGroup rootView;
     private Paint p = new Paint();
 
@@ -47,7 +50,7 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
     private void initUI(){
         recyclerView = rootView.findViewById(R.id.recycleView);
         initSwipe();
-        db = Home_Plan_homeDatabase.getDatabase(getContext());
+        db = MyDatabase.getDatabase(getContext());
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -56,14 +59,14 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(this);
         // UI 갱신
-        db.myDao().getAll().observe(getActivity(), new Observer<List<Home_Plan_Entity>>() {
+        db.home_plan_dao().getAll().observe(getActivity(), new Observer<List<Home_Plan_Entity>>() {
             @Override
             public void onChanged(List<Home_Plan_Entity> home_plan_entities) {
                 adapter.setItem(home_plan_entities);
             }
         });
-        // 프래그먼트간 데이터 이동
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -71,11 +74,11 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
                 Home_CustomDialog dialog = new Home_CustomDialog(rootView.getContext());
                 dialog.setDialogListener(new Home_CustomDialog.CustomDialogListener(){
                     @Override
-                    public void onPositiveClicked(String bookName, int totalUnit, int dDay) {
+                    public void onPositiveClicked(String bookName, int totalUnit, int curUnit) {
                         if (!bookName.equals("")) {
                             new Thread(() -> {
-                                Home_Plan_Entity memo = new Home_Plan_Entity(bookName, totalUnit, dDay);
-                                db.myDao().insert(memo);
+                                Home_Plan_Entity memo = new Home_Plan_Entity(bookName, totalUnit, curUnit);
+                                db.home_plan_dao().insert(memo);
                             }).start();
                         } else
                             Toast.makeText(rootView.getContext(), "책 이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
@@ -104,7 +107,7 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            db.myDao().delete(adapter.getItems().get(position));
+                            db.home_plan_dao().delete(adapter.getItems().get(position));
                         }
                     }).start();
 
@@ -126,15 +129,15 @@ public class Fragment_Home extends Fragment implements View.OnClickListener{
                     if (dX > 0) {
                         //오른쪽으로 밀었을 때
                     } else {
-                        p.setColor(Color.parseColor("#D32F2F"));
+                        p.setColor(Color.parseColor("#55D3D3D3"));
                         RectF background = new RectF((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
                         c.drawRect(background, p);
                         /*
                          * icon 추가할 수 있음.
                          */
-                        //icon = BitmapFactory.decodeResource(getResources(), R.drawable.icon_png); //vector 불가!
-                        // RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
-                        //c.drawBitmap(icon, null, icon_dest, p);
+                        icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_trash_can); //vector 불가!
+                        RectF icon_dest = new RectF((float) itemView.getRight() - 2 * width, (float) itemView.getTop() + width, (float) itemView.getRight() - width, (float) itemView.getBottom() - width);
+                        c.drawBitmap(icon, null, icon_dest, p);
                     }
                 }
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

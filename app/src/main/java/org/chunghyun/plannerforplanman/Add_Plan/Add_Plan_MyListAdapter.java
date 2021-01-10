@@ -1,6 +1,5 @@
 package org.chunghyun.plannerforplanman.Add_Plan;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +12,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chunghyun.plannerforplanman.R;
+import org.chunghyun.plannerforplanman.dataBase.Add_Plan_MyEntity;
+import org.chunghyun.plannerforplanman.dataBase.MyDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyListAdapter.ViewHolder> {
 
     private List<Add_Plan_MyEntity> items = new ArrayList<>();
-    private Context mContext;
-    private Add_Plan_MyDatabase db;
+    private MyDatabase db;
     private ViewGroup rootView;
 
-    public Add_Plan_MyListAdapter(Add_Plan_MyDatabase db){
+    public Add_Plan_MyListAdapter(MyDatabase db){
         this.db = db;
     }
 
@@ -45,7 +47,6 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
     public Add_Plan_MyListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         rootView = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_add_plan, parent, false);
-        mContext = parent.getContext();
         return new ViewHolder(view);
     }
 
@@ -58,22 +59,51 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
 
         private TextView content;
         private CheckBox complete;
+        private TextView page;
         private int index;
 
         public ViewHolder(View itemView){
             super(itemView);
-            content = (TextView)itemView.findViewById(R.id.todaycontent);
+            content = (TextView)itemView.findViewById(R.id.todayContent);
             complete = (CheckBox)itemView.findViewById(R.id.isComplete);
+            page = (TextView)itemView.findViewById(R.id.page);
             complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // 현재 페이지 받아오기
+                    String tmp = content.getText().toString().split(" ")[0];
+                    AtomicInteger curPage = new AtomicInteger();
+                    AtomicInteger totalPage = new AtomicInteger();
+                    AtomicBoolean possible = new AtomicBoolean(false);
                     if(isChecked){
                         editData(content.getText().toString(), 1);
                         content.setTextColor(rootView.getResources().getColor(R.color.checked));
+
+                        //체크시 홈페이지 업데이트
+                        if(Integer.parseInt(page.getText().toString())>0){
+                            new Thread(()->{
+                                curPage.set(db.home_plan_dao().getCur(tmp));
+                                totalPage.set(db.home_plan_dao().getPage(tmp));
+                                if(totalPage.get() < curPage.get() + Integer.parseInt(page.getText().toString())){
+                                    possible.set(true);
+                                }else
+                                    db.home_plan_dao().curUnitUpdate(tmp, curPage.get() + Integer.parseInt(page.getText().toString()));
+                            }).start();
+                            if(possible.get()){
+                                Toast.makeText(rootView.getContext(), "페이지 수가 초과하였습니다", Toast.LENGTH_SHORT).show();
+                                complete.setChecked(false);
+                            }
+                        }
                     }else{
                         editData(content.getText().toString(), 0);
                         content.setTextColor(rootView.getResources().getColor(R.color.black));
+                        if(Integer.parseInt(page.getText().toString())>0){
+                            new Thread(()->{
+                                curPage.set(db.home_plan_dao().getCur(tmp));
+                                db.home_plan_dao().curUnitUpdate(tmp, curPage.get() - Integer.parseInt(page.getText().toString()));
+                            }).start();
+                        }
                     }
                 }
             });
@@ -81,33 +111,42 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Add_Plan_CustomDialog dialog = new Add_Plan_CustomDialog(rootView.getContext());
-                    dialog.setDialogListener(new Add_Plan_CustomDialog.CustomDialogListener() {
-                        @Override
-                        public void onPositiveClicked(String content) {
-                            if (!content.equals("")) {
-                                editData(content, 0);
-                            } else
-                                Toast.makeText(rootView.getContext(), "한 글자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
-                        }
-                        @Override
-                        public void onNegativeClicked() { }
-                    });
-                    dialog.show();
+                    if(Integer.parseInt(page.getText().toString()) == 0) {
+                        Add_Plan_CustomDialog dialog = new Add_Plan_CustomDialog(rootView.getContext());
+                        dialog.setText(content.getText().toString());
+                        dialog.setDialogListener(new Add_Plan_CustomDialog.CustomDialogListener() {
+                            @Override
+                            public void onPositiveClicked(String content) {
+                                if (!content.equals("")) {
+                                    editData(content, 0);
+                                } else
+                                    Toast.makeText(rootView.getContext(), "한 글자 이상 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onNegativeClicked() {
+                            }
+                        });
+                        dialog.show();
+                    }else{
+                        Toast.makeText(rootView.getContext(), "간편 일정은 수정이 불가합니다.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
+
         }
         // 데이터 화면 표시
         public void onBind(Add_Plan_MyEntity memo, int position){
             index = position;
             content.setText(memo.getContent());
-            if(memo.isChecked == 0)
+            if(memo.getIsChecked() == 0)
                 complete.setChecked(false);
             else
                 complete.setChecked(true);
+            page.setText(memo.getPage() + "");
         }
 
-        // 일정 수정
+        // 일정 데이터 베이스 수정
         public void editData(String contents, int isChecked){
             new Thread(()->{
                 items.get(index).setContent(contents);

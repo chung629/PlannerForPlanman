@@ -1,4 +1,4 @@
-package org.chunghyun.plannerforplanman.Add_Plan;
+package org.chunghyun.plannerforplanman.dataBase;
 
 import android.content.Context;
 
@@ -8,27 +8,27 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 // 수정 할 필요 없 - 12/27
-@Database(version = 1, entities = {Add_Plan_MyEntity.class}, exportSchema = false)
+@Database(version = 1, entities = {Add_Plan_MyEntity.class, Home_Plan_Entity.class}, exportSchema = false)
 @TypeConverters({Converters.class})
-public abstract class Add_Plan_MyDatabase extends RoomDatabase {
+public abstract class MyDatabase extends RoomDatabase {
 
-    public abstract Add_Plan_MyDao myDao();
+    public abstract MyDao myDao();
+    public abstract Home_Plan_dao home_plan_dao();
 
-    private static  volatile Add_Plan_MyDatabase INSTANCE;
+    private static  volatile MyDatabase INSTANCE;
 
     // 싱글톤
-    public static Add_Plan_MyDatabase getDatabase(final Context context){
+    public static MyDatabase getDatabase(final Context context){
         if(INSTANCE == null){
-            synchronized (Add_Plan_MyDatabase.class){
+            synchronized (MyDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            Add_Plan_MyDatabase.class, "myDatabase").build();
+                            MyDatabase.class, "myDatabase").build();
                 }
             }
         }
         return INSTANCE;
     }
-
     //DB 객체 제거
     public static void destroyInstance(){
         INSTANCE = null;

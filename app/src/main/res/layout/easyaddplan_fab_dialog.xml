@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="15dp">
+
+    <TableLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/bookName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="책 이름"
+                android:textSize="24sp"
+                android:layout_weight="2"/>
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+            </Spinner>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/pageCount"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="페이지 수"
+                android:textSize="24sp"
+                android:layout_weight="2"/>
+
+            <EditText
+                android:id="@+id/unit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ems="3"
+                android:hint=" 입력"
+                android:inputType="numberDecimal"
+                android:layout_weight="3"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <Button
+            android:id="@+id/yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취소"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+</LinearLayout>

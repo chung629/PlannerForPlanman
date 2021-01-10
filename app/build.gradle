@@ -59,5 +59,8 @@ dependencies {
     //Sliding up Panel Layout
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
 
+    //text fab
+    implementation "com.github.edsergeev:text-fab:1.0.0"
+
 \
 }

@@ -20,8 +20,8 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
-import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyDatabase;
-import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyEntity;
+import org.chunghyun.plannerforplanman.dataBase.MyDatabase;
+import org.chunghyun.plannerforplanman.dataBase.Add_Plan_MyEntity;
 import org.chunghyun.plannerforplanman.Add_Plan.Add_Plan_MyListAdapter;
 import org.chunghyun.plannerforplanman.R;
 
@@ -36,7 +36,7 @@ public class Fragment_calendar extends Fragment {
     MaterialCalendarView materialCalendarView;
     ViewGroup rootView;
     Add_Plan_MyListAdapter adapter;
-    private Add_Plan_MyDatabase db;
+    private MyDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ public class Fragment_calendar extends Fragment {
         LinearLayout linearLayout = (LinearLayout)rootView.findViewById(R.id.calendarLayout);
         // 달력 및 메모
         RecyclerView recyclerView = (RecyclerView)rootView.findViewById(R.id.calendarDb);
-        db = Add_Plan_MyDatabase.getDatabase(getContext());
+        db = MyDatabase.getDatabase(getContext());
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
