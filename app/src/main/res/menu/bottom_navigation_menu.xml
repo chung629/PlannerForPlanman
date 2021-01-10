@@ -8,5 +8,5 @@
         android:icon="@drawable/icon_plan"/>
     <item android:id="@+id/action_calendar"
         android:title="@string/menu_calendar"
-        android:icon="@drawable/icon_calendar"/>
+        android:icon="@drawable/icon_delay"/>
 </menu>

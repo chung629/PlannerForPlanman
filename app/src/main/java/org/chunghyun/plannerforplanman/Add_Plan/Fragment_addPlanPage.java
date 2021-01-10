@@ -7,6 +7,7 @@
  import android.graphics.Color;
  import android.graphics.Paint;
  import android.graphics.RectF;
+ import android.graphics.drawable.ColorDrawable;
  import android.os.Bundle;
  import android.view.LayoutInflater;
  import android.view.View;
@@ -45,6 +46,7 @@
     private Paint p = new Paint();
     private int tempPage = 10000;
     private int curPage = 10000;
+    private int createPage = 10000;
 
     // 간편일정 관련
      private Easy_Plan_SpinnerAdapter spinnerAdapter;
@@ -138,7 +140,7 @@
                 mBuilder.setView(mView);
                 // 레이아웃 초기화
                 AlertDialog alertDialog = mBuilder.create();
-
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -152,18 +154,13 @@
                                 tempPage = db.home_plan_dao().getPage(spinner.getSelectedItem().toString());
                                 curPage = db.home_plan_dao().getCur(spinner.getSelectedItem().toString());
                             }).start();
-                            int possiblePage = tempPage - curPage;
-                            if (possiblePage < Integer.parseInt(page.getText().toString())) {
-                                Toast.makeText(getContext(), "입력 가능한 페이지는 " + possiblePage + " 이하 입니다.", Toast.LENGTH_SHORT).show();
-                            } else {
-                                String temp = spinner.getSelectedItem().toString() + " " + page.getText().toString() + " 페이지";
-                                new Thread(() -> {
-                                    Add_Plan_MyEntity memo2 = new Add_Plan_MyEntity(temp, 0, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()),
-                                            Integer.parseInt(page.getText().toString()));
-                                    db.myDao().insert(memo2);
-                                }).start();
-                                alertDialog.dismiss();
-                            }
+                            String temp = spinner.getSelectedItem().toString() + " " + page.getText().toString() + " page";
+                            new Thread(() -> {
+                                Add_Plan_MyEntity memo2 = new Add_Plan_MyEntity(temp, 0, new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date()),
+                                        Integer.parseInt(page.getText().toString()));
+                                db.myDao().insert(memo2);
+                            }).start();
+                            alertDialog.dismiss();
                         }
                     }
                 });

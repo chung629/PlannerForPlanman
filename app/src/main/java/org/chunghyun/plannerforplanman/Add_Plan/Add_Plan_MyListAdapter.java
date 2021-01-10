@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -75,25 +74,21 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
                     String tmp = content.getText().toString().split(" ")[0];
                     AtomicInteger curPage = new AtomicInteger();
                     AtomicInteger totalPage = new AtomicInteger();
-                    AtomicBoolean possible = new AtomicBoolean(false);
                     if(isChecked){
                         editData(content.getText().toString(), 1);
                         content.setTextColor(rootView.getResources().getColor(R.color.checked));
-
                         //체크시 홈페이지 업데이트
                         if(Integer.parseInt(page.getText().toString())>0){
                             new Thread(()->{
                                 curPage.set(db.home_plan_dao().getCur(tmp));
                                 totalPage.set(db.home_plan_dao().getPage(tmp));
                                 if(totalPage.get() < curPage.get() + Integer.parseInt(page.getText().toString())){
-                                    possible.set(true);
-                                }else
+                                    db.home_plan_dao().curUnitUpdate(tmp, totalPage.get());
+                                }else{
                                     db.home_plan_dao().curUnitUpdate(tmp, curPage.get() + Integer.parseInt(page.getText().toString()));
+                                }
+
                             }).start();
-                            if(possible.get()){
-                                Toast.makeText(rootView.getContext(), "페이지 수가 초과하였습니다", Toast.LENGTH_SHORT).show();
-                                complete.setChecked(false);
-                            }
                         }
                     }else{
                         editData(content.getText().toString(), 0);
@@ -101,7 +96,11 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
                         if(Integer.parseInt(page.getText().toString())>0){
                             new Thread(()->{
                                 curPage.set(db.home_plan_dao().getCur(tmp));
-                                db.home_plan_dao().curUnitUpdate(tmp, curPage.get() - Integer.parseInt(page.getText().toString()));
+                                if(curPage.get() - Integer.parseInt(page.getText().toString() )< 0){
+                                    db.home_plan_dao().curUnitUpdate(tmp, 0);
+                                }else{
+                                    db.home_plan_dao().curUnitUpdate(tmp, curPage.get() - Integer.parseInt(page.getText().toString()));
+                                }
                             }).start();
                         }
                     }

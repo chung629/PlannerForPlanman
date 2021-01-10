@@ -5,31 +5,26 @@
     android:layout_height="match_parent"
     android:background="@color/allBackGround"
     android:orientation="vertical">
-    //showOtherDates : defaults(현재 달만)
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/calendarLayout">
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:mcv_selectionColor="#a9dbf0cb"
-            app:mcv_showOtherDates="defaults">
-        </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
-    </LinearLayout>
+        android:text="미완료 일정"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="24sp"/>
+
     <ScrollView
-        android:id="@+id/scrollMemo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendarDb"
+                android:id="@+id/delayDB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

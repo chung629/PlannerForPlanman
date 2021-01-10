@@ -2,6 +2,8 @@ package org.chunghyun.plannerforplanman.Add_Plan;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +48,7 @@ public class Add_Plan_CustomDialog extends Dialog implements View.OnClickListene
         if(temp != null){
             content.setText(temp);
         }
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override

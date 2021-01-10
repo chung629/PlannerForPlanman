@@ -2,9 +2,10 @@
     <string name="app_name">Study Planner</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu_home">홈</string>
+    <string name="menu_home">총계획</string>
     <string name="menu_plan">계획</string>
-    <string name="menu_calendar">달력</string>
+    <string name="menu_calendar">미완료</string>
     <string name="admob_app_id">ca-app-pub-1037645698232256~3588749852</string>
     <string name="banner_ad_unit_id">ca-app-pub-1037645698232256/2115886087</string>
+    <string name="banner_ad_unit_id_for_text">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

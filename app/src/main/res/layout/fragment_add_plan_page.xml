@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="오늘 할 일"
-                android:textSize="30sp"
-                android:paddingLeft="20dp"
+                android:textSize="24sp"
+                android:paddingLeft="10dp"
                 android:layout_weight="3"
                 />
             <Button

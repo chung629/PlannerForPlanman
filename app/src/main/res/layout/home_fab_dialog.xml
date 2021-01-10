@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/dialogdesign"
     >
@@ -26,23 +26,23 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="2">
 
         <TextView
             android:id="@+id/pageText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:text="총 페이지 수"
-            android:layout_weight="3"
+            android:text="총 페이지"
+            android:layout_weight="1"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/totalUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="10"
+            android:ems="5"
             android:hint="입력"
             android:inputType="numberDecimal" />
 
@@ -56,22 +56,22 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="2">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:text="현재 페이지"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:textSize="18sp" />
 
         <EditText
             android:id="@+id/curUnit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:ems="10"
+            android:ems="5"
             android:hint="입력"
             android:inputType="numberDecimal" />
 
@@ -88,6 +88,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="1"
+            android:textColor="@color/dialogTextColor"
+            android:backgroundTint="@color/dialogColor"
+            style="?android:attr/borderlessButtonStyle"
             android:text="저장" />
 
         <Button
@@ -95,6 +98,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:textColor="@color/dialogTextColor"
+            android:backgroundTint="@color/dialogColor"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_weight="1"
             android:text="취소" />
     </LinearLayout>

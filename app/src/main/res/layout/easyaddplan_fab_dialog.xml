@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp"
+    android:background="@drawable/dialogdesign">
 
     <TableLayout
         android:layout_marginTop="20dp"
@@ -22,6 +23,7 @@
                 android:id="@+id/bookName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:hint="책 이름"
                 android:textSize="24sp"
                 android:layout_weight="2"/>
@@ -43,6 +45,7 @@
                 android:id="@+id/pageCount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:hint="페이지 수"
                 android:textSize="24sp"
                 android:layout_weight="2"/>
@@ -51,8 +54,9 @@
                 android:id="@+id/unit"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:ems="3"
+                android:ems="5"
                 android:hint=" 입력"
+                android:layout_marginRight="10dp"
                 android:inputType="numberDecimal"
                 android:layout_weight="3"/>
         </TableRow>
@@ -71,6 +75,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="확인"
+            android:textColor="@color/dialogTextColor"
+            android:backgroundTint="@color/dialogColor"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_margin="10dp"/>
 
         <Button
@@ -78,6 +85,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/dialogTextColor"
+            android:backgroundTint="@color/dialogColor"
+            style="?android:attr/borderlessButtonStyle"
             android:text="취소"
             android:layout_margin="10dp"/>
     </LinearLayout>

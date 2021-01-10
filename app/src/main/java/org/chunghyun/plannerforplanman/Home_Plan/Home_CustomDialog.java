@@ -2,6 +2,8 @@ package org.chunghyun.plannerforplanman.Home_Plan;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -59,6 +61,7 @@ public class Home_CustomDialog extends Dialog implements View.OnClickListener{
             totalUnit.setText(tempTotal);
             curUnit.setText(tempCur);
         }
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
     @Override
     public void onClick(View v) {

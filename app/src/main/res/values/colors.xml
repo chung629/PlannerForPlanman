@@ -16,4 +16,6 @@
     <color name="checked">#FFDCDCDC</color>
     <color name="allBackGround">#DFF5F5DC</color>
     <color name="adapterColor">#FFF5F5DC</color>
+    <color name="dialogColor">#FFFFF8DC</color>
+    <color name="dialogTextColor">#FF808080</color>
 </resources>
