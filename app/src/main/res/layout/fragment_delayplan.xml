@@ -10,7 +10,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="미완료 일정 - 체크시 항목이 제거됩니다"
+        android:text="미완료 일정-체크시 항목 제거"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         android:textSize="24sp"/>
