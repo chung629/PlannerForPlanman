@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/allBackGround"
+    android:background="@drawable/background_2"
     tools:context=".Add_Plan.Fragment_addPlanPage">
 
     <LinearLayout
@@ -18,15 +18,32 @@
             android:orientation="horizontal"
             android:minHeight="40dp"
             android:weightSum="10">
-            <TextView
-                android:id="@+id/textView3"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="오늘 할 일"
-                android:textSize="24sp"
-                android:paddingLeft="10dp"
+                android:orientation="vertical"
                 android:layout_weight="3"
-                />
+                android:weightSum="5">
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="오늘 할 일"
+                    android:textSize="24sp"
+                    android:paddingLeft="10dp"
+                    android:layout_weight="2"
+                    />
+                <TextView
+                    android:id="@+id/todayDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="날짜"
+                    android:textSize="14sp"
+                    android:paddingLeft="10dp"
+                    android:layout_weight="3"
+                    />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/easy_add"
                 android:layout_width="match_parent"

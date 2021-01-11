@@ -16,6 +16,7 @@
  import android.widget.Button;
  import android.widget.EditText;
  import android.widget.Spinner;
+ import android.widget.TextView;
  import android.widget.Toast;
 
  import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@
 
  import java.text.SimpleDateFormat;
  import java.util.ArrayList;
+ import java.util.Calendar;
  import java.util.Date;
  import java.util.List;
  import java.util.Locale;
@@ -47,6 +49,8 @@
     private int tempPage = 10000;
     private int curPage = 10000;
     private int createPage = 10000;
+    //오늘 날짜
+    private TextView dateView;
 
     // 간편일정 관련
      private Easy_Plan_SpinnerAdapter spinnerAdapter;
@@ -91,8 +95,17 @@
         // 간편 일정 추가
         Button easyPlan = (Button) rootView.findViewById(R.id.easy_add);
         easyPlan.setOnClickListener(this);
-
+        //오늘 날짜 관련
+        dateView = (TextView)rootView.findViewById(R.id.todayDate);
+        setDate(dateView);
     }
+    // 오늘 날짜 설정
+     public void setDate(TextView view){
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM월 DD일 EEE요일", Locale.KOREAN);
+        String date = formatter.format(today);
+        view.setText(date);
+     }
 
     @Override
     public void onClick(View v) {

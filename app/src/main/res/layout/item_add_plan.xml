@@ -27,15 +27,21 @@
 
         <TextView
             android:id="@+id/todayContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="test"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:gravity="center_vertical"
             android:textColor="@color/black"
-            android:textSize="30sp" />
+            android:textSize="18sp" />
         <TextView
             android:id="@+id/page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="0.00001sp"
             android:text="0"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

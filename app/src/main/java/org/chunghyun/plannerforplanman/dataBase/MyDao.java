@@ -28,9 +28,9 @@ public interface MyDao {
     @Query("SELECT * FROM addPlanDatabase WHERE date LIKE :selectDate")
     public LiveData<List<Add_Plan_MyEntity>> getAll(String selectDate);
 
-    @Query("SELECT * FROM addPlanDatabase WHERE isChecked == 0")
-    public LiveData<List<Add_Plan_MyEntity>> getData();
+    @Query("SELECT * FROM addPlanDatabase WHERE date LIKE :selectDate AND isChecked == 0")
+    public LiveData<List<Add_Plan_MyEntity>> getData(String selectDate);
 
-    @Query("SELECT date FROM addPlanDatabase WHERE isChecked == 0")
-    public List<String> getDate();
+    @Query("SELECT DISTINCT date FROM addPlanDatabase WHERE isChecked == 0")
+    public LiveData<List<String>> getDate();
 }

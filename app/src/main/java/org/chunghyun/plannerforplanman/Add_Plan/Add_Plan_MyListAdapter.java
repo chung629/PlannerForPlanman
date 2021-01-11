@@ -33,6 +33,7 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
         this.db = db;
     }
 
+
     @Override
     public int getItemCount() {
         return items.size();
@@ -66,6 +67,7 @@ public class Add_Plan_MyListAdapter extends RecyclerView.Adapter<Add_Plan_MyList
             content = (TextView)itemView.findViewById(R.id.todayContent);
             complete = (CheckBox)itemView.findViewById(R.id.isComplete);
             page = (TextView)itemView.findViewById(R.id.page);
+            content.setSelected(true);
             complete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
 
                 @Override

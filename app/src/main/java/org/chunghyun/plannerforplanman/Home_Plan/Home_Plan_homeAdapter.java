@@ -67,6 +67,7 @@ public class Home_Plan_homeAdapter extends RecyclerView.Adapter<Home_Plan_homeAd
             totalPage = (TextView)itemView.findViewById(R.id.totalPage);
             curPage = (TextView)itemView.findViewById(R.id.curPage);
             editBookName = (LinearLayout)itemView.findViewById(R.id.editBookName);
+            bookName.setSelected(true);
             // 프로그래스바
             progressBar = itemView.findViewById(R.id.state_progress);
             // 클릭시 편집 및 변경

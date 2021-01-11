@@ -44,6 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="책 이름"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:paddingLeft="5dp"
                 android:textSize="24sp" />
 
